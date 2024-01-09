@@ -2,11 +2,11 @@
 
 参考：https://souffle-lang.github.io/build
 
-在https://github.com/souffle-lang/souffle/releases/tag/2.4.1下载Source Code。
+在https://github.com/souffle-lang/souffle/releases/tag/2.4.1 下载Source Code。
 
 需要flex与bison库，可以通过Chocolatey进行安装。
 
-https://chocolatey.org/install#individual安装Chocolatey。
+https://chocolatey.org/install#individual 安装Chocolatey。
 
 运行命令：
 
