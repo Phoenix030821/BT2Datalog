@@ -1,0 +1,76 @@
+.type String <: symbol
+
+.decl IntAttr(agent:String, attr:String, value:number)
+.input IntAttr
+
+.decl IntAttrInstance(tree:String, agent:String, attr:String, value:number)
+.output IntAttrInstance
+
+.decl Start(tree:String, node:number)
+.output Start
+
+.decl Finish(tree:String, node:number, flag:number)
+.output Finish
+
+.decl Precede(tree:String, node1:number, node2:number)
+.input Precede
+
+.decl Parent(tree:String, node1:number, node2:number)
+.input Parent
+
+.decl AgentInitComplete(tree:String, agent:String)
+
+.decl Action(tree:String, node:number, action:String)
+.input Action
+.output Action
+
+.decl ActionBegin(tree:String, node:number, action:String)
+.output ActionBegin
+
+.decl ActionComplete(tree:String, node:number)
+.input ActionComplete
+
+IntAttrInstance("ruleDemo", "TestAgent", "statisticAccuracy", 0) :-
+Start("ruleDemo", -1), IntAttr("TestAgent", "statisticAccuracy", 0).
+
+AgentInitComplete("ruleDemo", "TestAgent") :-
+IntAttrInstance("ruleDemo", "TestAgent", "statisticAccuracy", 0).
+
+Finish("ruleDemo", -2, 1) :- 
+Start("ruleDemo", -1), AgentInitComplete("ruleDemo", "TestAgent").
+
+Finish("ruleDemo", -1, 1) :-
+Start("ruleDemo", -1), Finish("ruleDemo", 0, 1).
+
+Finish("ruleDemo", 0, 1) :-
+Parent("ruleDemo", 0, node2), Finish("ruleDemo", node2, 1).
+
+Start("ruleDemo", 0) :-
+Finish("ruleDemo", node, 1), Precede("ruleDemo", node, 0).
+
+Start("ruleDemo", 1) :-
+Start("ruleDemo", 0), IntAttrInstance("ruleDemo", "TestAgent", "statisticAccuracy", 1).
+
+Finish("ruleDemo", 1, 1) :-
+Parent("ruleDemo", 1, node2), Finish("ruleDemo", node2, 1).
+
+Start("ruleDemo", 3) :-
+Start("ruleDemo", 1), IntAttrInstance("ruleDemo", "TestAgent", "planeNum", 1).
+
+Start("ruleDemo", 4) :-
+Start("ruleDemo", 1), IntAttrInstance("ruleDemo", "TestAgent", "planeNum", 2).
+
+Start("ruleDemo", 2) :-
+Start("ruleDemo", 0), IntAttrInstance("ruleDemo", "TestAgent", "statisticAccuracy", 2).
+
+ActionBegin(tree, node, action) :-
+Start(tree, node), Action(tree, node, action).
+
+Finish("ruleDemo", 3, 1) :-
+Start("ruleDemo", 3), ActionComplete("ruleDemo", 3).
+
+Finish("ruleDemo", 4, 1) :-
+Start("ruleDemo", 4), ActionComplete("ruleDemo", 4).
+
+Finish("ruleDemo", 2, 1) :-
+Start("ruleDemo", 2), ActionComplete("ruleDemo", 2).
